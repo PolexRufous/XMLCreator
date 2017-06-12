@@ -1,0 +1,15 @@
+{
+  "mainClassName": "main-section",
+  "schemas": [
+    {
+      "name": "FTP.MA",
+      "type": "ftp",
+      "enabled": true
+    },
+    {
+      "name": "REST.MA",
+      "type": "rest",
+      "enabled": false
+    }
+  ]
+}

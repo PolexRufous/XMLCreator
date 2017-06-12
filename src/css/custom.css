@@ -1,0 +1,15 @@
+.fa{
+    cursor: pointer;
+}
+
+.fa-plus, .fa-check{
+    color: #6da03c;
+}
+
+.fa-times{
+    color: #ff4d37;
+}
+
+.fa-pencil-square-o{
+    color: #ff8900;
+}
