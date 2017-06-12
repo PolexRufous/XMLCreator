@@ -13,3 +13,15 @@
 .fa-pencil-square-o{
     color: #ff8900;
 }
+
+.selectors-schemas {
+    float: left;
+}
+
+.hidden {
+    display: none;
+}
+
+.clear {
+    clear: both;
+}

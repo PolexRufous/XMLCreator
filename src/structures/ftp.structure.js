@@ -59,7 +59,7 @@ export default {
         },
         VersionElementInThird: {
             standalone: true,
-            name: 'VersionElement',
+            name: 'VersionElementInThird',
             xmlns: 'cor',
             required: true,
             path: 'CoreElement.ThirdElement',
@@ -70,7 +70,7 @@ export default {
         },
         DescriptionElementInThird: {
             standalone: true,
-            name: 'DescriptionElement',
+            name: 'DescriptionElementInThird',
             xmlns: 'cor',
             required: true,
             path: 'CoreElement.ThirdElement',
@@ -89,7 +89,7 @@ export default {
         },
         RequestKey: {
             standalone: true,
-            name: 'Key',
+            name: 'RequestKey',
             xmlns: 'cor',
             required: true,
             path: 'CoreElement.ThirdElement.RequestElement',
@@ -100,7 +100,7 @@ export default {
         },
         RequestValue: {
             standalone: true,
-            name: 'Value',
+            name: 'RequestValue',
             xmlns: 'cor',
             required: true,
             path: 'CoreElement.ThirdElement.RequestElement',
@@ -110,7 +110,7 @@ export default {
         },
         RequestDescription: {
             standalone: true,
-            name: 'Description',
+            name: 'RequestDescription',
             xmlns: 'cor',
             required: false,
             path: 'CoreElement.ThirdElement.RequestElement',

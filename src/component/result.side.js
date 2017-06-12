@@ -34,7 +34,6 @@ export default class ResultSide extends React.Component {
         });
         if (!this.state.mounted) {
             this.mountCodeMirror();
-        } else {
             this.setState({
                 mounted: true
             });
@@ -66,7 +65,7 @@ export default class ResultSide extends React.Component {
                 </div>
                 <div className="form-group">
                     <label>There is result here:</label>
-                    <textarea id="xml-result" />
+                    <textarea id="xml-result" className="hidden" />
                 </div>
             </aside>
         );

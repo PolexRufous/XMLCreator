@@ -16,6 +16,7 @@ export default class BuilderSide extends React.Component {
         this.isInitialized = this.isInitialized.bind(this);
         this.initNewXml = this.initNewXml.bind(this);
         this.onSchemaChange = this.onSchemaChange.bind(this);
+        this.formatData = this.formatData.bind(this);
     }
 
     componentWillMount() {
@@ -54,12 +55,18 @@ export default class BuilderSide extends React.Component {
         dispatcher.dispatch(internalAction);
     }
 
+    formatData() {
+        const internalAction = {};
+        internalAction.actionType = 'FORMAT_DATA';
+        dispatcher.dispatch(internalAction);
+    }
+
     render() {
         const {schemas} = Config;
         let radioCounter = 0;
         const schemaSelectors = schemas.map(schema => {
             radioCounter++;
-            return <div key={'radio' + radioCounter}>
+            return <div key={'radio' + radioCounter} className="selectors-schemas">
                 <label>&nbsp; {schema.name} &nbsp;</label>
                 <input type="radio" name="schema"
                        disabled={!schema.enabled}
@@ -68,6 +75,7 @@ export default class BuilderSide extends React.Component {
                        onChange={this.onSchemaChange} />
             </div>
         });
+        const schemasPanel = <div>{schemaSelectors}</div>
         const builder = this.state.initialized && this.state.structure ?
             <BuilderPart component={this.state.structure}/> :
             false;
@@ -75,7 +83,8 @@ export default class BuilderSide extends React.Component {
         return (
             <aside className="col-xs-6">
                 <h1>Builder section</h1>
-                {schemaSelectors}
+                {schemasPanel}
+                <div className="clear" />
                 <div>
                     <button className="btn btn-primary col-xs-6"
                             disabled={this.state.schema === ''}
@@ -84,7 +93,7 @@ export default class BuilderSide extends React.Component {
                 </div>
                 <div>
                     <button className="btn btn-primary col-xs-6" disabled={!this.state.initialized}
-                            onClick={this.initNewXml}>
+                            onClick={this.formatData}>
                         Format XML</button>
                 </div>
                 <div className="panel panel-default col-xs-12">

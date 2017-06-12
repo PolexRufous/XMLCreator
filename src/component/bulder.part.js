@@ -64,7 +64,9 @@ export default class BuilderPath extends React.Component {
                 remove = null;
             }
             input = <span>&nbsp;&nbsp;{add}&nbsp;{remove}</span>
-            childrenArray = component.children.map(childName => component[childName]);
+            childrenArray = component.children
+                .map(childName => component[childName])
+                .filter(child => child !== undefined);
         }
 
         const childrenParts = childrenArray.map((child) => {
