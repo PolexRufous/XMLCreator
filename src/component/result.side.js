@@ -2,6 +2,7 @@ import React from 'react';
 import o2x from 'object-to-xml';
 import FileSaver from 'file-saver';
 import DataStore from '../store/data.store';
+import * as Config from '../config.json';
 const CodeMirror = require('../libs/codemirror');
 require('../libs/xml');
 
@@ -21,11 +22,13 @@ export default class ResultSide extends React.Component {
     }
 
     componentWillMount(){
-        DataStore.on('data_updated', this.changeData);
+        const {Constants} = Config;
+        DataStore.on(Constants.Events.DATA_UPDATED, this.changeData);
     }
 
     componentWillUnmount(){
-        DataStore.removeListener('data_updated', this.changeData);
+        const {Constants} = Config;
+        DataStore.removeListener(Constants.Events.DATA_UPDATED, this.changeData);
     }
 
     changeData(){

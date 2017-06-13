@@ -1,5 +1,6 @@
-import {EventEmitter} from "events";
-import dispatcher from "./dispatcher";
+import {EventEmitter} from 'events';
+import dispatcher from './dispatcher';
+import * as Config from '../config.json';
 
 class DataStore extends EventEmitter {
     constructor() {
@@ -106,8 +107,9 @@ class DataStore extends EventEmitter {
     }
 
     updateValue(component, value) {
+        const {Constants} = Config;
         this._updateStructureValue(component, value);
-        this.emit('change');
+        this.emit(Constants.Events.CHANGE);
     }
 
     _updateStructureValue(component, value) {
@@ -119,11 +121,12 @@ class DataStore extends EventEmitter {
     }
 
     initXml(xmlFileType) {
+        const {Constants} = Config;
         switch(xmlFileType) {
-            case 'ftp':
+            case Constants.StructureTypes.FTP:
                 this._initFtpXml();
                 break;
-            case 'rest':
+            case Constants.StructureTypes.REST:
                 this._initRestXml();
                 break;
             default:
@@ -133,10 +136,11 @@ class DataStore extends EventEmitter {
 
     _initFtpXml() {
         const self = this;
+        const {Constants} = Config;
         import(/* webpackMode: "lazy"  */ '../structures/ftp.structure.js')
             .then(structure => {
                 self._initState(structure.default);
-                self.emit('initialized');
+                self.emit(Constants.Events.INITIALIZED);
             })
             .catch(error =>
                 alert(error.message));
@@ -144,10 +148,11 @@ class DataStore extends EventEmitter {
 
     _initRestXml() {
         const self = this;
+        const {Constants} = Config;
         import(/* webpackMode: "lazy"  */ '../structures/rest.structure.js')
             .then(structure => {
                 self._initState(structure.default);
-                self.emit('initialized');
+                self.emit(Constants.Events.INITIALIZED);
             })
             .catch(error =>
                 alert(error.message));
@@ -164,17 +169,18 @@ class DataStore extends EventEmitter {
     }
 
     dispatchActions(internalAction) {
+        const {Constants} = Config;
         const self = this;
         switch (internalAction.actionType) {
-            case 'SET_VALUE':
+            case Constants.ActionTypes.SET_VALUE:
                 self.updateValue(internalAction.component, internalAction.value);
                 break;
-            case 'CREATE_XML':
+            case Constants.ActionTypes.CREATE_XML:
                 self.initXml(internalAction.xmlFileType);
                 break;
-            case 'FORMAT_DATA':
+            case Constants.ActionTypes.FORMAT_DATA:
                 self._formatData();
-                self.emit('data_updated');
+                self.emit(Constants.Events.DATA_UPDATED);
                 break;
             default:
                 console.error('No such action type expected', internalAction.actionType);

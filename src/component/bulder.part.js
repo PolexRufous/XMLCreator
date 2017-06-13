@@ -1,5 +1,6 @@
 import React from 'react';
 import dispatcher from '../store/dispatcher';
+import * as Config from '../config.json';
 
 export default class BuilderPath extends React.Component {
     constructor(params){
@@ -25,11 +26,12 @@ export default class BuilderPath extends React.Component {
     }
 
     saveValue(){
+        const {Constants} = Config;
         this.setState({
             isValueEdit: false
         });
         const internalAction = {
-            actionType: 'SET_VALUE',
+            actionType: Constants.ActionTypes.SET_VALUE,
             value: this.state.newValue,
             component: this.props.component
         };
@@ -63,7 +65,7 @@ export default class BuilderPath extends React.Component {
             if (component.required){
                 remove = null;
             }
-            input = <span>&nbsp;&nbsp;{add}&nbsp;{remove}</span>
+            input = <span>&nbsp;&nbsp;{add}&nbsp;{remove}</span>;
             childrenArray = component.children
                 .map(childName => component[childName])
                 .filter(child => child !== undefined);

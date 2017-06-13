@@ -11,5 +11,21 @@
       "type": "rest",
       "enabled": false
     }
-  ]
+  ],
+  "Constants": {
+    "ActionTypes": {
+      "SET_VALUE": "SET_VALUE",
+      "CREATE_XML": "CREATE_XML",
+      "FORMAT_DATA": "FORMAT_DATA"
+    },
+    "Events": {
+      "DATA_UPDATED": "data_updated",
+      "INITIALIZED": "initialized",
+      "CHANGE": "change"
+    },
+    "StructureTypes": {
+      "FTP": "ftp",
+      "REST": "rest"
+    }
+  }
 }

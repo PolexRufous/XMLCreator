@@ -1,7 +1,7 @@
 import React from 'react';
 import DataStore from '../store/data.store';
 import BuilderPart from './bulder.part';
-import Config from '../config.json';
+import * as Config from '../config.json';
 import dispatcher from '../store/dispatcher';
 
 export default class BuilderSide extends React.Component {
@@ -20,13 +20,15 @@ export default class BuilderSide extends React.Component {
     }
 
     componentWillMount() {
-        DataStore.on('change', this.changeStructure);
-        DataStore.on('initialized', this.isInitialized);
+        const {Constants} = Config;
+        DataStore.on(Constants.Events.CHANGE, this.changeStructure);
+        DataStore.on(Constants.Events.INITIALIZED, this.isInitialized);
     }
 
     componentWillUnmount() {
-        DataStore.removeListener('change', this.changeStructure);
-        DataStore.removeListener('initialized', this.isInitialized);
+        const {Constants} = Config;
+        DataStore.removeListener(Constants.Events.CHANGE, this.changeStructure);
+        DataStore.removeListener(Constants.Events.INITIALIZED, this.isInitialized);
     }
 
     changeStructure() {
@@ -49,15 +51,17 @@ export default class BuilderSide extends React.Component {
     }
 
     initNewXml() {
+        const {Constants} = Config;
         const internalAction = {};
-        internalAction.actionType = 'CREATE_XML';
+        internalAction.actionType = Constants.ActionTypes.CREATE_XML;
         internalAction.xmlFileType = this.state.schema;
         dispatcher.dispatch(internalAction);
     }
 
     formatData() {
+        const {Constants} = Config;
         const internalAction = {};
-        internalAction.actionType = 'FORMAT_DATA';
+        internalAction.actionType = Constants.ActionTypes.FORMAT_DATA;
         dispatcher.dispatch(internalAction);
     }
 
