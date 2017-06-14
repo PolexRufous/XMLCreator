@@ -48,15 +48,21 @@ export default class BuilderPath extends React.Component {
         const { component } = this.props;
         const { value } = component;
         const { isContainer } = component;
+        const editValueLabel = value && value !== '' ? "fa-check-square-o" : "fa-bug";
         let input;
         let childrenArray = [];
         if (!isContainer){
             if (this.state.isValueEdit){
-                input = <span>&nbsp;&nbsp; - <input type="text" value={this.state.newValue} onChange={this.editValue} />&nbsp;&nbsp;
-                    <i className="fa fa-check" aria-hidden="true" onClick={this.saveValue}/></span>
+                let inputField = <input type="text" value={this.state.newValue} onChange={this.editValue} />;
+                if (component.hasValidValues) {
+                    const options = component.validValues
+                        .map(value => <option value={value} key={component.name + ":" + value}>{value}</option>);
+                    inputField = <select onChange={this.editValue}>{options}</select>
+                }
+                input = <span>&nbsp;&nbsp;{inputField}&nbsp;&nbsp;<i className="fa fa-check" aria-hidden="true" onClick={this.saveValue}/></span>
             } else {
                 input = <span>&nbsp;&nbsp; - <label>{value}</label>&nbsp;
-                    <i className="fa fa-pencil-square-o" aria-hidden="true" onClick={this.editValueMode}/></span>
+                    <i className={"fa " + editValueLabel} aria-hidden="true" onClick={this.editValueMode}/></span>
             }
 
         } else {

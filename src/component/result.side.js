@@ -56,10 +56,12 @@ export default class ResultSide extends React.Component {
     }
 
     unmountCodeMirror() {
-        this.codeMirror.toTextArea();
-        this.setState({
-            mounted: false
-        });
+        if (this.state.mounted) {
+            this.codeMirror.toTextArea();
+            this.setState({
+                mounted: false
+            });
+        }
     }
 
     saveFile(){
