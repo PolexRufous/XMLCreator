@@ -79,7 +79,7 @@ export default class BuilderPath extends React.Component {
         return(
             <ul>
                 <li>
-                    {component.name}
+                    {component.displayName}
                     {input}
                 </li>
                     {childrenParts}

@@ -13,6 +13,7 @@ class DataStore extends EventEmitter {
         this.isRest = false;
         this.elements = {};
         this.root = '';
+        this.xmlroot = '';
         this.rootxmlns = '';
 
         this.updateValue = this.updateValue.bind(this);
@@ -59,7 +60,9 @@ class DataStore extends EventEmitter {
         if (element.isContainer) {
             const self = this;
             const {children} = element;
-            children.map(childName => self._putElementWithRequiredChildrenToStructure(childName));
+            children
+                .filter(childName => this.elements[childName].required)
+                .map(childName => self._putElementWithRequiredChildrenToStructure(childName));
         }
     }
 
@@ -75,7 +78,7 @@ class DataStore extends EventEmitter {
     _formatData() {
         let baseStructureElement = this.structure[this.root];
         this.data = this.base;
-        let baseDataElement = this.base[this.rootxmlns + ':' + this.root];
+        let baseDataElement = this.base[this.rootxmlns + ':' + this.xmlroot];
         baseDataElement = baseDataElement['#'];
         const self = this;
         baseStructureElement.children
@@ -89,8 +92,8 @@ class DataStore extends EventEmitter {
 
     _putElementsToData(structureElement, dataElement) {
         const dataElementName = structureElement.xmlns && structureElement.xmlns !== '' ?
-            structureElement.xmlns + ':' + structureElement.name :
-            structureElement.name;
+            structureElement.xmlns + ':' + structureElement.displayName :
+            structureElement.displayName;
         if (structureElement.isContainer) {
             dataElement[dataElementName] = {
                 '#': {}
@@ -166,6 +169,7 @@ class DataStore extends EventEmitter {
         this.isFtp = structure.ftp;
         this.isRest = structure.rest;
         this.root = structure.root;
+        this.xmlroot = structure.xmlroot;
         this.rootxmlns = structure.rootxmlns;
         this.base = structure.base;
         this.elements = structure.elements;

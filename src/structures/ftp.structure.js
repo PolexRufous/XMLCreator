@@ -3,7 +3,7 @@ export default {
     rest: false,
     base: {
         '?xml version=\"1.0\" encoding=\"UTF-8\"?': null,
-        'cor:CoreElement': {
+        'cor:Core': {
             '@': {
                 'xmlns:exm': "http://www.example.com/exmp",
                 'xmlns:cor': "http://www.example.com/core",
@@ -16,11 +16,13 @@ export default {
     },
 
     root: 'CoreElement',
+    xmlroot: 'Core',
     rootxmlns: 'cor',
 
     elements: {
         CoreElement: {
             name: 'CoreElement',
+            displayName: 'Core',
             xmlns: 'cor',
             required: true,
             path: '',
@@ -30,6 +32,7 @@ export default {
         DescriptionElement: {
             standalone: true,
             name: 'DescriptionElement',
+            displayName: 'Description',
             xmlns: 'exm',
             required: true,
             path: 'CoreElement',
@@ -40,6 +43,7 @@ export default {
         VersionElement: {
             standalone: true,
             name: 'VersionElement',
+            displayName: 'Version',
             xmlns: 'exm',
             required: true,
             path: 'CoreElement',
@@ -51,6 +55,7 @@ export default {
         ThirdElement: {
             standalone: true,
             name: 'ThirdElement',
+            displayName: 'ThirdElement',
             xmlns: 'exm',
             required: true,
             path: 'CoreElement',
@@ -60,6 +65,7 @@ export default {
         VersionElementInThird: {
             standalone: true,
             name: 'VersionElementInThird',
+            displayName: 'Version',
             xmlns: 'cor',
             required: true,
             path: 'CoreElement.ThirdElement',
@@ -71,6 +77,7 @@ export default {
         DescriptionElementInThird: {
             standalone: true,
             name: 'DescriptionElementInThird',
+            displayName: 'Description',
             xmlns: 'cor',
             required: true,
             path: 'CoreElement.ThirdElement',
@@ -81,6 +88,7 @@ export default {
         RequestElement: {
             standalone: false,
             name: 'RequestElement',
+            displayName: 'Request',
             xmlns: 'cor',
             required: true,
             path: 'CoreElement.ThirdElement',
@@ -90,6 +98,7 @@ export default {
         RequestKey: {
             standalone: true,
             name: 'RequestKey',
+            displayName: 'Key',
             xmlns: 'cor',
             required: true,
             path: 'CoreElement.ThirdElement.RequestElement',
@@ -101,6 +110,7 @@ export default {
         RequestValue: {
             standalone: true,
             name: 'RequestValue',
+            displayName: 'Value',
             xmlns: 'cor',
             required: true,
             path: 'CoreElement.ThirdElement.RequestElement',
@@ -111,6 +121,7 @@ export default {
         RequestDescription: {
             standalone: true,
             name: 'RequestDescription',
+            displayName: 'Description',
             xmlns: 'cor',
             required: false,
             path: 'CoreElement.ThirdElement.RequestElement',
