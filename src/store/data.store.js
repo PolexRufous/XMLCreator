@@ -165,7 +165,9 @@ class DataStore extends EventEmitter {
                 alert(error.message));
     }
 
-    _initState(structure) {
+    _initState(structureOrig) {
+        this.structure = {};
+        const structure = JSON.parse(JSON.stringify(structureOrig));
         this.isFtp = structure.ftp;
         this.isRest = structure.rest;
         this.root = structure.root;
