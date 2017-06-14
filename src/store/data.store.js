@@ -59,7 +59,7 @@ class DataStore extends EventEmitter {
         if (element.isContainer) {
             const self = this;
             const {children} = element;
-            children.map(childName => self._putRequiredElementsToStructure(childName));
+            children.map(childName => self._putElementWithRequiredChildrenToStructure(childName));
         }
     }
 
@@ -78,10 +78,12 @@ class DataStore extends EventEmitter {
         let baseDataElement = this.base[this.rootxmlns + ':' + this.root];
         baseDataElement = baseDataElement['#'];
         const self = this;
-        Object.keys(baseStructureElement)
+        baseStructureElement.children
             .map(elementName => {
                 const element = baseStructureElement[elementName];
-                self._putElementsToData(element, baseDataElement);
+                if (element) {
+                    self._putElementsToData(element, baseDataElement);
+                }
             });
     }
 
@@ -96,10 +98,12 @@ class DataStore extends EventEmitter {
             let newDataElement = dataElement[dataElementName];
             newDataElement = newDataElement['#'];
             const self = this;
-            Object.keys(structureElement)
+            structureElement.children
                 .map(elementName => {
                     const element = structureElement[elementName];
-                    self._putElementsToData(element, newDataElement);
+                    if (element) {
+                        self._putElementsToData(element, newDataElement);
+                    }
                 });
         } else {
             dataElement[dataElementName] = structureElement.value;
