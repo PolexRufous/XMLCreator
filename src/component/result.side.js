@@ -18,17 +18,20 @@ export default class ResultSide extends React.Component {
         this.updateCodeMirror = this.updateCodeMirror.bind(this);
         this.saveFile = this.saveFile.bind(this);
         this.mountCodeMirror = this.mountCodeMirror.bind(this);
+        this.unmountCodeMirror = this.unmountCodeMirror.bind(this);
 
     }
 
     componentWillMount(){
         const {Constants} = Config;
         DataStore.on(Constants.Events.DATA_UPDATED, this.changeData);
+        DataStore.on(Constants.Events.CHANGE, this.unmountCodeMirror);
     }
 
     componentWillUnmount(){
         const {Constants} = Config;
         DataStore.removeListener(Constants.Events.DATA_UPDATED, this.changeData);
+        DataStore.removeListener(Constants.Events.CHANGE, this.unmountCodeMirror);
     }
 
     changeData(){
@@ -50,6 +53,13 @@ export default class ResultSide extends React.Component {
             readOnly: true
         });
         this.updateCodeMirror();
+    }
+
+    unmountCodeMirror() {
+        this.codeMirror.toTextArea();
+        this.setState({
+            mounted: false
+        });
     }
 
     saveFile(){
