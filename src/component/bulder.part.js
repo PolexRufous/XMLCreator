@@ -1,6 +1,7 @@
 import React from 'react';
 import dispatcher from '../store/dispatcher';
 import * as Config from '../config.json';
+import Popout from 'react-popout';
 
 export default class BuilderPath extends React.Component {
     constructor(params){
@@ -8,7 +9,8 @@ export default class BuilderPath extends React.Component {
         const value = this.props.component.value || '';
         this.state = {
             isValueEdit: false,
-            newValue: value
+            newValue: value,
+            isPopedOut: false
         }
     }
 
@@ -17,6 +19,7 @@ export default class BuilderPath extends React.Component {
         this.saveValue = this.saveValue.bind(this);
         this.editValueMode = this.editValueMode.bind(this);
         this.showAddPopup = this.showAddPopup.bind(this);
+        this.hideAddPopup = this.hideAddPopup.bind(this);
     }
 
     editValue(action){
@@ -71,6 +74,9 @@ export default class BuilderPath extends React.Component {
             if (component.required){
                 remove = null;
             }
+            if (this.state.isPopedOut) {
+                add = this.getPopoutWindow(component);
+            }
             input = <span>&nbsp;&nbsp;{add}&nbsp;{remove}</span>;
             childrenArray = component.children
                 .map(childName => component[childName])
@@ -96,5 +102,34 @@ export default class BuilderPath extends React.Component {
     showAddPopup(event){
         const element = event.target;
         console.log(element);
+        this.setState({
+            isPopedOut: true
+        });
+    }
+
+    hideAddPopup() {
+        this.setState({
+            isPopedOut: false
+        });
+    }
+
+    validChildrenToChose(component) {
+        const existingStandalone = component.children
+            .map(childName => component[childName])
+            .filter(child => child !== undefined)
+            .filter(child => child.standalone)
+            .map(child => child.name);
+        return component.children.slice()
+            .filter(child => !existingStandalone.includes(child));
+    }
+
+    getPopoutWindow(component) {
+        const list = this.validChildrenToChose(component)
+            .map(child => <option value={child}>{child}</option>);
+        return <Popout title='Chose element' onClose={this.hideAddPopup}>
+            <select>
+                {list}
+            </select>
+        </Popout>
     }
 }
