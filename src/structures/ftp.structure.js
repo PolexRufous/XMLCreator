@@ -93,7 +93,7 @@ export default {
             required: true,
             path: 'CoreElement.ThirdElement',
             isContainer: true,
-            children: ['RequestKey', 'RequestValue', 'RequestDescription']
+            children: ['RequestKey', 'RequestValue', 'RequestDescription', 'RequestAdditional']
         },
         RequestKey: {
             standalone: true,
@@ -122,6 +122,17 @@ export default {
             standalone: true,
             name: 'RequestDescription',
             displayName: 'Description',
+            xmlns: 'cor',
+            required: false,
+            path: 'CoreElement.ThirdElement.RequestElement',
+            isContainer: false,
+            value: '',
+            hasValidValues: false
+        },
+        RequestAdditional: {
+            standalone: false,
+            name: 'RequestAdditional',
+            displayName: 'Additional',
             xmlns: 'cor',
             required: false,
             path: 'CoreElement.ThirdElement.RequestElement',

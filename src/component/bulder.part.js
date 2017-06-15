@@ -1,7 +1,7 @@
 import React from 'react';
 import dispatcher from '../store/dispatcher';
 import * as Config from '../config.json';
-import Popout from 'react-popout';
+import DataStore from '../store/data.store'
 
 export default class BuilderPath extends React.Component {
     constructor(params){
@@ -10,16 +10,17 @@ export default class BuilderPath extends React.Component {
         this.state = {
             isValueEdit: false,
             newValue: value,
-            isPopedOut: false
+            isElementChoosing: false,
         }
     }
 
     componentWillMount(){
         this.editValue = this.editValue.bind(this);
         this.saveValue = this.saveValue.bind(this);
+        this.createElement = this.createElement.bind(this);
         this.editValueMode = this.editValueMode.bind(this);
-        this.showAddPopup = this.showAddPopup.bind(this);
-        this.hideAddPopup = this.hideAddPopup.bind(this);
+        this.showChooseElementSelect = this.showChooseElementSelect.bind(this);
+        this.hideChooseElementSelect = this.hideChooseElementSelect.bind(this);
     }
 
     editValue(action){
@@ -33,10 +34,24 @@ export default class BuilderPath extends React.Component {
         this.setState({
             isValueEdit: false
         });
+        const value = document.getElementById(this.props.component.name + 'value').value;
         const internalAction = {
             actionType: Constants.ActionTypes.SET_VALUE,
-            value: this.state.newValue,
+            value: value,
             component: this.props.component
+        };
+        dispatcher.dispatch(internalAction);
+    }
+
+    createElement() {
+        const {Constants} = Config;
+        const elementName = document.getElementById(this.props.component.name + 'element').value;
+        this.setState({
+            isElementChoosing: false
+        });
+        const internalAction = {
+            actionType: Constants.ActionTypes.CREATE_ELEMENT,
+            elementName: elementName
         };
         dispatcher.dispatch(internalAction);
     }
@@ -56,11 +71,11 @@ export default class BuilderPath extends React.Component {
         let childrenArray = [];
         if (!isContainer){
             if (this.state.isValueEdit){
-                let inputField = <input type="text" value={this.state.newValue} onChange={this.editValue} />;
+                let inputField = <input id={component.name + 'value'}  type="text" value={this.state.newValue} onChange={this.editValue} />;
                 if (component.hasValidValues) {
                     const options = component.validValues
                         .map(value => <option value={value} key={component.name + ":" + value}>{value}</option>);
-                    inputField = <select onChange={this.editValue}>{options}</select>
+                    inputField = <select id={component.name + 'value'}>{options}</select>
                 }
                 input = <span>&nbsp;&nbsp;{inputField}&nbsp;&nbsp;<i className="fa fa-check" aria-hidden="true" onClick={this.saveValue}/></span>
             } else {
@@ -70,12 +85,19 @@ export default class BuilderPath extends React.Component {
 
         } else {
             let remove = <i className="fa fa-times" aria-hidden="true"/>;
-            let add = <i className="fa fa-plus" aria-hidden="true" onClick={this.showAddPopup}/>;
+            let add = <i className="fa fa-plus" aria-hidden="true" onClick={this.showChooseElementSelect}/>;
             if (component.required){
                 remove = null;
             }
-            if (this.state.isPopedOut) {
-                add = this.getPopoutWindow(component);
+            if (this.state.isElementChoosing) {
+                const childrenOptions = this.getChildrenOptions(component);
+                if (childrenOptions.length > 0) {
+                    add = <span>&nbsp;&rarr;&nbsp;<select id={component.name + 'element'}>{this.getChildrenOptions(component)}</select>
+                        &nbsp;&nbsp;<i className="fa fa-check" aria-hidden="true" onClick={this.createElement}/></span>
+                } else {
+                    add = null;
+                }
+
             }
             input = <span>&nbsp;&nbsp;{add}&nbsp;{remove}</span>;
             childrenArray = component.children
@@ -99,17 +121,15 @@ export default class BuilderPath extends React.Component {
         );
     }
 
-    showAddPopup(event){
-        const element = event.target;
-        console.log(element);
+    showChooseElementSelect(){
         this.setState({
-            isPopedOut: true
+            isElementChoosing: true
         });
     }
 
-    hideAddPopup() {
+    hideChooseElementSelect() {
         this.setState({
-            isPopedOut: false
+            isElementChoosing: false
         });
     }
 
@@ -123,13 +143,13 @@ export default class BuilderPath extends React.Component {
             .filter(child => !existingStandalone.includes(child));
     }
 
-    getPopoutWindow(component) {
-        const list = this.validChildrenToChose(component)
-            .map(child => <option value={child}>{child}</option>);
-        return <Popout title='Chose element' onClose={this.hideAddPopup}>
-            <select>
-                {list}
-            </select>
-        </Popout>
+    getChildrenOptions(component) {
+        return this.validChildrenToChose(component)
+            .map(childName => this.getStructureElementByName(childName))
+            .map(child => <option key={(Math.random()*1e32).toString(36)} value={child.name}>{child.displayName}</option>);
+    }
+
+    getStructureElementByName(elementName) {
+        return DataStore.getElementByName(elementName);
     }
 }

@@ -16,7 +16,8 @@
     "ActionTypes": {
       "SET_VALUE": "SET_VALUE",
       "CREATE_XML": "CREATE_XML",
-      "FORMAT_DATA": "FORMAT_DATA"
+      "FORMAT_DATA": "FORMAT_DATA",
+      "CREATE_ELEMENT": "CREATE_ELEMENT"
     },
     "Events": {
       "DATA_UPDATED": "data_updated",

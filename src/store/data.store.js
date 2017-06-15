@@ -165,6 +165,10 @@ class DataStore extends EventEmitter {
                 alert(error.message));
     }
 
+    getElementByName(elementName) {
+        return this.elements[elementName];
+    }
+
     _initState(structureOrig) {
         this.structure = {};
         const structure = JSON.parse(JSON.stringify(structureOrig));
@@ -191,6 +195,10 @@ class DataStore extends EventEmitter {
             case Constants.ActionTypes.FORMAT_DATA:
                 self._formatData();
                 self.emit(Constants.Events.DATA_UPDATED);
+                break;
+            case Constants.ActionTypes.CREATE_ELEMENT:
+                console.log(internalAction.actionType);
+                console.log(internalAction.elementName);
                 break;
             default:
                 console.error('No such action type expected', internalAction.actionType);
