@@ -15,6 +15,7 @@ class DataStore extends EventEmitter {
         this.root = '';
         this.xmlroot = '';
         this.rootxmlns = '';
+        this.e2eNumbering = 0;
 
         this.updateValue = this.updateValue.bind(this);
         this.dispatchActions = this.dispatchActions.bind(this);
@@ -172,6 +173,7 @@ class DataStore extends EventEmitter {
     _initState(structureOrig) {
         this.structure = {};
         const structure = JSON.parse(JSON.stringify(structureOrig));
+        this.e2eNumbering = 0;
         this.isFtp = structure.ftp;
         this.isRest = structure.rest;
         this.root = structure.root;
@@ -197,8 +199,8 @@ class DataStore extends EventEmitter {
                 self.emit(Constants.Events.DATA_UPDATED);
                 break;
             case Constants.ActionTypes.CREATE_ELEMENT:
-                console.log(internalAction.actionType);
-                console.log(internalAction.elementName);
+                self._putElementWithRequiredChildrenToStructure(internalAction.elementName);
+                self.emit(Constants.Events.DATA_UPDATED);
                 break;
             default:
                 console.error('No such action type expected', internalAction.actionType);
