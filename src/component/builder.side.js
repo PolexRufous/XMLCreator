@@ -25,10 +25,20 @@ export default class BuilderSide extends React.Component {
         DataStore.on(Constants.Events.INITIALIZED, this.isInitialized);
     }
 
+    componentDidMount() {
+        //document.getElementById('xsdFile').addEventListener('change', this.handleXsdFileSelect, false);
+    }
+
     componentWillUnmount() {
         const {Constants} = Config;
         DataStore.removeListener(Constants.Events.CHANGE, this.changeStructure);
         DataStore.removeListener(Constants.Events.INITIALIZED, this.isInitialized);
+    }
+
+    handleXsdFileSelect(event) {
+        const file = event.target.files[0];
+        const fileName = file.name;
+        document.getElementById('list').innerHTML = "<span>This is: " + fileName + "</span>";
     }
 
     changeStructure() {
@@ -79,7 +89,11 @@ export default class BuilderSide extends React.Component {
                        onChange={this.onSchemaChange} />
             </div>
         });
-        const schemasPanel = <div>{schemaSelectors}</div>
+        /*const schemaSelectors1 = <div>
+            <label>Chose schema for your xml</label>
+            <input type="file" id="xsdFile" name="file" accept=".xsd"/>
+        </div>;*/
+        const schemasPanel = <div>{schemaSelectors}</div>;
         const builder = this.state.initialized && this.state.structure ?
             <BuilderPart component={this.state.structure}/> :
             false;

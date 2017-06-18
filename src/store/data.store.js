@@ -43,18 +43,6 @@ class DataStore extends EventEmitter {
         return this.structure[this.root];
     }
 
-    _putRequiredElementsToStructure(elementName) {
-        const element = this.elements[elementName];
-        if (element.required) {
-            this._putElementToStructure(element);
-            if (element.isContainer) {
-                const self = this;
-                const {children} = element;
-                children.map(childName => self._putRequiredElementsToStructure(childName));
-            }
-        }
-    }
-
     _putElementWithRequiredChildrenToStructure(elementName) {
         const element = this.elements[elementName];
         this._putElementToStructure(element);
@@ -73,7 +61,18 @@ class DataStore extends EventEmitter {
         path
             .filter(currPath => currPath !== '')
             .map(currPath => parentElement = parentElement[currPath]);
-        parentElement[templateElement.name] = templateElement;
+        if (parentElement.standalone) {
+            parentElement = parentElement[0];
+        }
+        if (templateElement.standalone) {
+            parentElement[templateElement.name] = templateElement;
+        } else {
+            if (!parentElement[templateElement.name]) {
+                parentElement[templateElement.name] = [];
+            }
+            parentElement[templateElement.name].push(templateElement);
+            templateElement.name = templateElement.name + this.e2eNumbering++;
+        }
     }
 
     _formatData() {

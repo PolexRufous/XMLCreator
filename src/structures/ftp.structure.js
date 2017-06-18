@@ -21,6 +21,7 @@ export default {
 
     elements: {
         CoreElement: {
+            standalone: true,
             name: 'CoreElement',
             displayName: 'Core',
             xmlns: 'cor',
