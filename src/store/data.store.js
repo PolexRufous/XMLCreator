@@ -61,7 +61,7 @@ class DataStore extends EventEmitter {
         path
             .filter(currPath => currPath !== '')
             .map(currPath => parentElement = parentElement[currPath]);
-        if (parentElement.standalone) {
+        if (parentElement.standalone !== undefined && !parentElement.standalone) {
             parentElement = parentElement[0];
         }
         if (templateElement.standalone) {

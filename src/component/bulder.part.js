@@ -106,9 +106,12 @@ export default class BuilderPath extends React.Component {
         }
 
         const childrenParts = childrenArray.map((child) => {
-                return (
-                    <BuilderPath key={(Math.random()*1e32).toString(36)} component={child}/>
-                );
+                    if (Array.isArray(child)) {
+                        return child.map(element =>
+                            <BuilderPath key={(Math.random()*1e32).toString(36)} component={element}/>);
+                    } else {
+                        return (<BuilderPath key={(Math.random()*1e32).toString(36)} component={child}/>);
+                    }
         });
         return(
             <ul>
